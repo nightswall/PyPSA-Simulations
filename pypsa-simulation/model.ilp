@@ -1,0 +1,14 @@
+\ Model obj_copy
+\ LP format - for model browsing. Use MPS format to capture full model detail.
+Minimize
+ 
+Subject To
+ c49: x1 <= 0
+ c97: x49 >= 0
+ c171: x51 <= 0
+ c265: x1 - x49 + x51 = 70
+Bounds
+ x1 free
+ x49 free
+ x51 free
+End
