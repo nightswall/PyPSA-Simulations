@@ -25,7 +25,7 @@ def cvs_converter(df, path='output.csv'):
 def df_plotter(network):
     from matplotlib import pyplot as plt
     network.buses_t.p.plot()
-    network.buses_t.temp.plot()
-    network.buses_t.voltage.plot()
-    network.buses_t.current.plot()
+    # network.buses_t.temp.plot()
+    # network.buses_t.voltage.plot()
+    # network.buses_t.current.plot()
     plt.show()

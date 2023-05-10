@@ -1,4 +1,4 @@
-from random import uniform, random, randint
+from random import uniform, random, randint, seed
 from datetime import datetime as dt
 import math
 from functools import reduce
@@ -7,7 +7,7 @@ START_DAY = "2023-01-01 00:00:00"
 TIME_PERIOD_AS_DAY = 1
 RESOLUTION_BY_SECONDS = 60
 TIMESTAMP_PER_DAY = int(24*3600/RESOLUTION_BY_SECONDS)
-
+seed(10)
 
 def generate_timeseries():
     timeseries = []
@@ -38,7 +38,7 @@ def list_weighter(_list: list):
     sin_mult = 0.8
     for _ in range(TIME_PERIOD_AS_DAY):
         tmp.extend(
-            map(lambda x: x*round(uniform(3, 7),3), _list)
+            map(lambda x: x*round(uniform(0.9, 1.23), 3), _list)
         )
         # tmp.extend(
         #     map(lambda x: x*(1-sin_mult+sin_mult*math.sin(random()*math.pi)), _list)
@@ -99,7 +99,7 @@ def df_combiner(network):
     df_combined = df_combined.sort_index()
     return df_combined
 
-def cvs_converter(df, path='output.csv'):
+def csv_converter(df, path='output.csv'):
     df.to_csv(path)  
 
 def df_plotter(network):
@@ -109,3 +109,9 @@ def df_plotter(network):
     network.buses_t.voltage.plot()
     network.buses_t.current.plot()
     plt.show()
+
+def grouped_csv_converter(df, df_group, path='output.csv'):
+    grouped = df.groupby(df_group)
+    _path = path.split('.csv')[0]
+    for group in grouped.groups.keys():
+        csv_converter(grouped.get_group(group), f'{_path}_{group.lower().replace(" ","_")}.csv')

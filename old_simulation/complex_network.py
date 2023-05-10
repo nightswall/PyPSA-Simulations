@@ -88,4 +88,6 @@ network.buses_t['voltage'] = pd.DataFrame(data=voltage)
 network.buses_t['current'] = pd.DataFrame(data=current)
 
 df_combine = df_combiner(network)
-cvs_converter(df_combine)
+df_plotter(network)
+# cvs_converter(df_combine)
+# grouped_csv_converter(df_combine, df_combine.Bus, '../output')

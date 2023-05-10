@@ -59,7 +59,8 @@ class ValueEngine:
 
         return tmp
 
-    def list_expander(self, _list: list, new_len: int):
+    def list_expander(self, _list: list, new_len: int=0):
+        if not new_len: new_len = self.TE.timestamp_per_day
         old_len = len(_list)
         assert new_len > old_len
         tmp, result = _list, []
