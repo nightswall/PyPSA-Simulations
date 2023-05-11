@@ -4,9 +4,10 @@ class CustomBus:
         self.name = name
         self.initial_temperature = init_temp
         self.heat_capacity = heat_cap
-        self.average_voltage = None # need random voltage
+        self.average_voltage = valueEngine.list_expander(valueEngine.random_voltage_list(230, 5))
         self.generator_list = [CustomGenerator(f"{i} - {self.typename}:{self.name}", valueEngine) for i in range(num_of_gen)]
         self.load_list = [CustomLoad(f"{i} - {self.typename}:{self.name}", valueEngine) for i in range(num_of_load)]
+        self.total_mass = sum(map(lambda x: x.mass,  (self.generator_list+self.load_list)))
 
     def network_syntax(self):
         return {
@@ -19,14 +20,18 @@ class CustomBus:
                 dict(load.network_syntax(), **{'bus': self.name}) for load in self.load_list
             ]
         }
-
+    
+    def average_efficiency(self):
+        total_gen = len(self.generator_list)
+        all_efficiency_list = list(map(lambda x: x.efficiency, self.generator_list))
+        return list(map(lambda x: sum(x)/total_gen, zip(*all_efficiency_list)))
 
 class CustomComponent:
     typename = None
     def __init__(self, name, valueEngine):
         self.VE = valueEngine
         self.name = name
-        self.mass = None
+        self.mass = self.VE.RE.randint(3, 5)
         self.power_list = self.VE.list_expander(self.VE.random_power_list())
 
     def network_syntax(self):

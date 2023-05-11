@@ -17,15 +17,15 @@ class TimestampEngine:
             resolution_by_seconds=1 , #seconds
             time_period_as_day=1, #days
                                     ):
-        self.start_day = start_day
+        self.start_day = int(start_day) if type(start_day) in (float, int)\
+                                   else int(dt.strptime(start_day, '%Y-%m-%d %H:%M:%S').timestamp())
         self.resolution_by_seconds = resolution_by_seconds
         self.time_period_as_day = time_period_as_day
         self.timestamp_per_day = int(24*3600/resolution_by_seconds)
 
     def generate_timeseries(self):
         timeseries = []
-        start_ts = int(dt.strptime(self.start_day, '%Y-%m-%d %H:%M:%S').timestamp())
-        for gen_ts in range(start_ts, start_ts+self.time_period_as_day*24*3600, self.resolution_by_seconds):
+        for gen_ts in range(self.start_day, self.start_day+self.time_period_as_day*24*3600, self.resolution_by_seconds):
             datetime = dt.fromtimestamp(gen_ts)
             timeseries.append(str(datetime))
 
@@ -84,13 +84,13 @@ class ValueEngine:
     def random_efficiency_list(self):
         return [self.RE.randint(45,78)*0.01 for _ in range(self.RE.randint(3,7))]
     
-    def calculate_temperature_list(self, bus):
+    def calculate_temperature(self, bus):
         temp = []
 
         for power, efficiency in zip(bus.p_set, bus.e_set):
             energy = power*(1-efficiency)*self.TE.resolution_by_seconds
             delta_T = energy/(bus.mass*bus.heat_capacity)
-            temp.append(bus.initial_temperature+delta_T)
+            temp.append(bus.temperature+delta_T)
         
         return temp
     
