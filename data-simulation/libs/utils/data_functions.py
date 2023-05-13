@@ -19,8 +19,14 @@ def df_combiner(network):
     df_combined = df_combined.sort_index()
     return df_combined
 
-def cvs_converter(df, path='output.csv'):
-    df.to_csv(path)  
+def csv_converter(df, path='output.csv'):
+    df.to_csv(path)
+
+def grouped_csv_converter(df, df_group, path='output.csv'):
+    grouped = df.groupby(df_group)
+    _path = path.split('.csv')[0]
+    for group in grouped.groups.keys():
+        csv_converter(grouped.get_group(group), f'{_path}_{group.lower().replace(" ","_")}.csv')  
 
 def df_plotter(network):
     from matplotlib import pyplot as plt

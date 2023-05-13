@@ -105,6 +105,9 @@ class ValueEngine:
         
         return temp
     
+    def calculate_temperature_index(self, bus, index):
+        pass
+
     def calculate_current(self, bus):
         current = []
         for power, efficiency, voltage in zip(bus.p_set, bus.e_set, bus.v_set):
@@ -112,3 +115,7 @@ class ValueEngine:
             current.append( round(effective_power/voltage, 3) )
         
         return current
+    
+
+    def calculate_current_index(self, bus, index):
+        pass

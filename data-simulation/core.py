@@ -7,6 +7,7 @@ logging.basicConfig(level=logging.ERROR)
 
 class Core:
     def __init__(self, seed='', mode=0, start_day='2023-01-01 00:00:00', resolution_by_seconds=1, time_period_as_day=1):
+        resolution_by_seconds = 1 if mode else resolution_by_seconds
         self.VE = ValueEngine(RandomEngine(seed), TimestampEngine(start_day, resolution_by_seconds, time_period_as_day))
         self.network = pypsa.Network()
         snapshots = self.VE.TE.generate_timepoints() if mode else self.VE.TE.generate_timeseries()
