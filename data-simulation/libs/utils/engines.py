@@ -21,16 +21,27 @@ class TimestampEngine:
                                    else int(dt.strptime(start_day, '%Y-%m-%d %H:%M:%S').timestamp())
         self.resolution_by_seconds = resolution_by_seconds
         self.time_period_as_day = time_period_as_day
-        self.timestamp_per_day = int(24*3600/resolution_by_seconds)
+        self.timestamp_per_day = int(86400/resolution_by_seconds)
 
     def generate_timeseries(self):
         timeseries = []
-        for gen_ts in range(self.start_day, self.start_day+self.time_period_as_day*24*3600, self.resolution_by_seconds):
+        for gen_ts in range(self.start_day, self.start_day+self.time_period_as_day*86400, self.resolution_by_seconds):
             datetime = dt.fromtimestamp(gen_ts)
             timeseries.append(str(datetime))
 
         return timeseries
     
+    def generate_timepoints(self):
+        timepoints = []
+        for gen_ts in range(-7200, 79200, self.resolution_by_seconds):
+            time = dt.strftime(dt.fromtimestamp(gen_ts), '%H:%M:%S')
+            timepoints.append(time)
+
+        return timepoints
+    
+    def set_start_day(self, start_day):
+        self.start_day = int(start_day) if type(start_day) in (float, int)\
+                                   else int(dt.strptime(start_day, '%Y-%m-%d %H:%M:%S').timestamp())
 class ValueEngine:
 
     def __init__(self, RE=RandomEngine(), TE=TimestampEngine()):

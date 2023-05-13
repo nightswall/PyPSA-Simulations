@@ -9,14 +9,19 @@ MODE = 1
 if __name__ == '__main__':
      
     if MODE:
-        core = Core('10', dt.now().timestamp(), resolution_by_seconds=1)
+        core = Core('10', MODE, dt.now().timestamp(), resolution_by_seconds=1)
         i = 0
         while True:
-            now = dt.strftime(dt.now()+timedelta(hours=i), '%Y-%m-%d %H:%M:%S')
+            datetime = dt.now()+timedelta(hours=i)
+            now = str(datetime.replace(microsecond=0).time())
             core.network.lpf(now)
-            print( core.network.buses_t.p.loc[now])
+            print(core.network.buses_t.p.loc[now])
             i+=1
-            sleep(1)
+            if datetime.date() > dt.fromtimestamp(core.VE.TE.start_day).date():
+                print("change")
+                core.VE.TE.set_start_day(datetime.timestamp())
+            else:
+                sleep(0.5)
             """
             maybe not datetime onlytime for 24h and reproduce again and again""" 
         """
@@ -35,7 +40,7 @@ if __name__ == '__main__':
         sleep(interval_by_seconds)
         """
     else:
-        core = Core('10', dt.now().timestamp())
+        core = Core('10', MODE, dt.now().timestamp())
 
         core.network.lpf()
 

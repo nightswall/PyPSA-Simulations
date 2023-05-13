@@ -56,4 +56,6 @@ class CustomGenerator(CustomComponent):
         self.efficiency = self.VE.list_expander(self.VE.random_efficiency_list())
 
     def renew_efficiency_list(self):
-        self.efficiency = self.VE.list_expander(self.VE.random_efficiency_list())
+        new_efficiency_list = self.VE.random_efficiency_list()
+        new_efficiency_list[0] = round(self.efficiency[-1], 2)
+        self.efficiency = self.VE.list_expander(new_efficiency_list)
