@@ -1,4 +1,4 @@
-```
+
 ##### Usage Static
 ```
 python3 main.py static random_seed interval
