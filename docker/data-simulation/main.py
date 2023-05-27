@@ -11,6 +11,8 @@ import warnings
 
 warnings.filterwarnings('ignore')
 
+DEBUG = True
+
 MODE = [
     'static',
     'stream'
@@ -18,6 +20,7 @@ MODE = [
 
 def stream(core, bus_name, interval):
     client = CustomClient(environ.get('MQTT_HOSTNAME'), environ.get('MQTT_PORT'), environ.get('MQTT_TOPIC'), bus_name)
+    if DEBUG: print("connected")
     while True:
         bus_object = core.bus_list[bus_name]
         _dict = {'bus': bus_name}
@@ -46,7 +49,7 @@ def stream(core, bus_name, interval):
 
         _json = dumps(_dict)
         client.publish(_json)
-
+        if DEBUG: print("send")
         sleep(interval)
 
 def static(core):

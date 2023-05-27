@@ -1,0 +1,102 @@
+version: "3"
+services:
+  mqtt:
+    image: toke/mosquitto
+    container_name: mqtt
+    expose:
+      - 1883
+    ports:
+      - 1883:1883
+    restart: unless-stopped
+    networks:
+      - mqtt_network
+
+  sensor_a:
+    build:
+      dockerfile: ./Dockerfile
+    container_name: sensor_a
+    environment:
+      - MQTT_HOSTNAME=mqtt
+      - MQTT_PORT=1883
+      - MQTT_TOPIC=/data
+    depends_on:
+      - mqtt
+    networks:
+      - mqtt_network
+    command: python3 main.py stream "10" 5 "A"
+  
+  sensor_b:
+    build:
+      dockerfile: ./Dockerfile
+    container_name: sensor_b
+    environment:
+      - MQTT_HOSTNAME=mqtt
+      - MQTT_PORT=1883
+      - MQTT_TOPIC=/data
+    depends_on:
+      - mqtt
+    networks:
+      - mqtt_network
+    command: python3 main.py stream "10" 5 "B"
+
+  sensor_c:
+    build:
+      dockerfile: ./Dockerfile
+    container_name: sensor_c
+    environment:
+      - MQTT_HOSTNAME=mqtt
+      - MQTT_PORT=1883
+      - MQTT_TOPIC=/data
+    depends_on:
+      - mqtt
+    networks:
+      - mqtt_network
+    command: python3 main.py stream "10" 5 "C"
+
+  sensor_d:
+    build:
+      dockerfile: ./Dockerfile
+    container_name: sensor_d
+    environment:
+      - MQTT_HOSTNAME=mqtt
+      - MQTT_PORT=1883
+      - MQTT_TOPIC=/data
+    depends_on:
+      - mqtt
+    networks:
+      - mqtt_network
+    command: python3 main.py stream "10" 5 "D"
+
+  sensor_e:
+    build:
+      dockerfile: ./Dockerfile
+    container_name: sensor_e
+    environment:
+      - MQTT_HOSTNAME=mqtt
+      - MQTT_PORT=1883
+      - MQTT_TOPIC=/data
+    depends_on:
+      - mqtt
+    networks:
+      - mqtt_network
+    command: python3 main.py stream "10" 5 "E"
+
+  sensor_f:
+    build:
+      dockerfile: ./Dockerfile
+    container_name: sensor_f
+    environment:
+      - MQTT_HOSTNAME=mqtt
+      - MQTT_PORT=1883
+      - MQTT_TOPIC=/data
+    depends_on:
+      - mqtt
+    networks:
+      - mqtt_network
+    command: python3 main.py stream "10" 5 "F"
+
+      
+
+networks:
+  mqtt_network:
+    driver: bridge

@@ -1,0 +1,2 @@
+pypsa==0.22.1
+paho-mqtt
